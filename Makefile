@@ -2,7 +2,7 @@ VENV_NAME=venv
 
 .PHONY: prepare-dev venv build
 
-all: prepare-dev venv build
+all: venv build
 
 prepare-dev: 
 	sudo apt-get -y install python3 python3-pip
