@@ -1,0 +1,13 @@
+version: 2
+jobs:
+  deploy:
+    machine:
+      enabled: true
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          name: Deploy Over SSH
+          command: |
+            scp -oStrictHostKeyChecking=no -r ~/project ${SSH_USER}@${SSH_HOST}:test/.
+            #ssh $SSH_USER@$SSH_HOST "<remote deploy command>"
