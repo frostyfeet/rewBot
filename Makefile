@@ -2,12 +2,11 @@ VENV_NAME=venv
 
 .PHONY: prepare-dev venv build
 
-all: venv build
+all: prepare-dev venv build
 
 prepare-dev: 
 	sudo apt-get -y install python3 python3-pip
-	pip3 install virtualenv
-	make venv
+	pip3 install --user virtualenv
 
 venv:
 	test -d $(VENV_NAME) || virtualenv -p python3 $(VENV_NAME)
