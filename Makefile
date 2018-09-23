@@ -6,8 +6,7 @@ all: prepare-dev venv build
 
 prepare-dev: 
 	sudo apt-get -y install python3.5 python3-pip
-	export LC_ALL=C
-	python3 -m pip install --user virtualenv
+	pip3 install virtualenv
 	make venv
 
 venv:
