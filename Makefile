@@ -5,7 +5,7 @@ VENV_NAME=venv
 all: prepare-dev venv build
 
 prepare-dev: 
-	sudo apt-get -y install python3.5 python3-pip
+	sudo apt-get -y install python3 python3-pip
 	pip3 install virtualenv
 	make venv
 
