@@ -5,6 +5,9 @@ VENV_NAME=venv
 all: prepare-dev venv build
 
 prepare-dev: 
+	export LC_ALL="en_US.UTF-8"
+	export LC_CTYPE="en_US.UTF-8"
+	sudo dpkg-reconfigure locales
 	sudo apt-get -y install python3 python3-pip
 	pip3 install virtualenv
 	make venv
