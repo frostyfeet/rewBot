@@ -12,5 +12,5 @@ venv:
 	./$(VENV_NAME)/bin/pip3 install -r requirements.txt
 
 build: 
-	sudo cp rewbot_cron /etc/cron.d/rewbot_cron
+	sudo cp rewbot_cron /etc/cron.d/rewbot
 
