@@ -11,4 +11,4 @@ jobs:
           command: |
             ssh ${SSH_USER}@${SSH_HOST} "mkdir -p ~/code/rewbot"
             scp -oStrictHostKeyChecking=no -r ~/project/* ${SSH_USER}@${SSH_HOST}:code/rewbot/.
-            ssh ${SSH_USER}@${SSH_HOST} "cd ~/code/rewbot; make -f~/code/rewbot/"
+            ssh ${SSH_USER}@${SSH_HOST} "cd ~/code/rewbot; make"
