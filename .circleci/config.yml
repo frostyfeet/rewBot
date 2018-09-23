@@ -9,5 +9,6 @@ jobs:
       - run:
           name: Deploy Over SSH
           command: |
-            scp -oStrictHostKeyChecking=no -r ~/project ${SSH_USER}@${SSH_HOST}:test/.
+            mkdir ~/code/
+            scp -oStrictHostKeyChecking=no -r ~/project ${SSH_USER}@${SSH_HOST}:code/.
             #ssh $SSH_USER@$SSH_HOST "<remote deploy command>"
