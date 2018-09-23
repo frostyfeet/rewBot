@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  builds:
+  build:
     machine:
       enabled: true
     working_directory: ~/project
