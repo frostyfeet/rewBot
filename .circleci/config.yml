@@ -1,6 +1,9 @@
 version: 2
 jobs:
   build:
+    filters:
+      branches:
+        only: master
     machine:
       enabled: true
     working_directory: ~/project
