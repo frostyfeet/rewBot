@@ -9,7 +9,6 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('config.ini')
-print(config['slack']['slack_token'])
 
 print(datetime.datetime.now())
 slack_token = config['slack']['slack_token']
