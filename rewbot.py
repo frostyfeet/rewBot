@@ -70,7 +70,8 @@ def get_property_assessment(address):
     try:
         r = requests.get("https://www.bcassessment.ca/Property/Search/GetByAddress?addr={}".format(address))
         if r.status_code == 200:
-            code = json.loads(r.content)[0]['value']
+            #code = json.loads(r.content)[0]['value']
+            code = json.loads(r.content.decode('utf-8'))[0]['value']
             r = requests.get("https://www.bcassessment.ca/Property/Info/{}".format(code))
             html = bs4.BeautifulSoup(r.content, 'html.parser')
             bc = {}
