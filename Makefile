@@ -14,4 +14,6 @@ venv:
 
 build: 
 	sudo cp rewbot_cron /etc/cron.d/rewbot
+	env
+	echo "$(SSH_HOST)"
 
