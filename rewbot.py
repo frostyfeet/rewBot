@@ -5,9 +5,15 @@ from slackclient import SlackClient
 import pickle
 import datetime
 import urllib
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+print(config['slack']['slack_token'])
 
 print(datetime.datetime.now())
-slack_token = ''
+slack_token = config['slack']['slack_token']
+
 url_list = [
             'https://www.rew.ca/properties/search/869746565/sort/latest/desc/page/1' # North Vancouver
             ]
@@ -16,14 +22,14 @@ url_list = [
 def send_slack(content):
     sc = SlackClient(slack_token)
     print(content)
-    sc.api_call(
-        "chat.postMessage",
-        channel="#general",
-        text=content,
-        as_user=True,
-        mrkdwn=True,
-        username="RewBot"
-        )
+    #sc.api_call(
+    #    "chat.postMessage",
+    #    channel="#general",
+    #    text=content,
+    #    as_user=True,
+    #    mrkdwn=True,
+    #    username="RewBot"
+    #    )
 
 
 def create_file(data):

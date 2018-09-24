@@ -13,7 +13,6 @@ venv:
 	./$(VENV_NAME)/bin/pip3 install -r requirements.txt
 
 build: 
+	sed -i 's/REPLACE/$(slack_token)/g' config.ini
 	sudo cp rewbot_cron /etc/cron.d/rewbot
-	env
-	echo "$(slack_token)"
 
