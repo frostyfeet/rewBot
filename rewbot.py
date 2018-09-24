@@ -26,14 +26,14 @@ url_list = ['https://www.rew.ca/properties/search/869746565/sort/latest/desc/pag
 def send_slack(content):
     sc = SlackClient(slack_token)
     print(content)
-    #sc.api_call(
-    #    "chat.postMessage",
-    #    channel="#general",
-    #    text=content,
-    #    as_user=True,
-    #    mrkdwn=True,
-    #    username="RewBot"
-    #    )
+    sc.api_call(
+        "chat.postMessage",
+        channel="#general",
+        text=content,
+        as_user=True,
+        mrkdwn=True,
+        username="RewBot"
+        )
 
 
 def create_file(data):
