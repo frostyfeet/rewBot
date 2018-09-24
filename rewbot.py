@@ -5,7 +5,6 @@ from slackclient import SlackClient
 import pickle
 import datetime
 import urllib
-import configparser
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -13,8 +12,13 @@ config.read('config.ini')
 print(datetime.datetime.now())
 slack_token = config['slack']['slack_token']
 
-url_list = [
-            'https://www.rew.ca/properties/search/869746565/sort/latest/desc/page/1' # North Vancouver
+url_list = ['https://www.rew.ca/properties/search/869746565/sort/latest/desc/page/1',    # Vancouver
+            'https://www.rew.ca/properties/search/869836757/sort/latest/desc/page/1',    # Burnaby
+            'https://www.rew.ca/properties/search/869839683/sort/latest/desc/page/1',    # Port Moody
+            'https://www.rew.ca/properties/search/869844572/sort/latest/desc/page/1',    # Coquitlam
+            'https://www.rew.ca/properties/search/869847257/sort/latest/desc/page/1',    # New Westminster
+            'https://www.rew.ca/properties/search/869850668/sort/latest/desc/page/1',    # Port Coquitlam
+            'https://www.rew.ca/properties/search/869854096/sort/latest/desc/page/1',    # North Vancouver
             ]
 
 
