@@ -15,4 +15,3 @@ venv:
 build: 
 	sed -i 's/REPLACE/$(slack_token)/g' config.ini
 	sudo cp rewbot_cron /etc/cron.d/rewbot
-
