@@ -1,1 +1,1 @@
-*/5 * * * * cd /home/deploy/code/rewbot/; ./venv/bin/python3 rewbot.py >> rewbot.log
+*/5 * * * * deploy cd ~/code/rewbot/; ./venv/bin/python3 rewbot.py >> rewbot.log
