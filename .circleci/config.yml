@@ -12,4 +12,4 @@ jobs:
             ssh ${SSH_USER}@${SSH_HOST} "mkdir -p ~/code/rewbot"
             scp -oStrictHostKeyChecking=no -r ~/project/* ${SSH_USER}@${SSH_HOST}:code/rewbot/.
             export slack_token=${slack_token}
-            ssh -oSendEnv=slack_token ${SSH_USER}@${SSH_HOST} "cd ~/code/rewbot; make"
+            ssh -oSendEnv=slack_token ${SSH_USER}@${SSH_HOST} "cd ~/code/rewbot; make slack_token=${slack_token}"
