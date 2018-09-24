@@ -5,6 +5,7 @@ from slackclient import SlackClient
 import pickle
 import datetime
 import urllib
+import configparser
 
 config = configparser.ConfigParser()
 config.read('config.ini')
