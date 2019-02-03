@@ -1,4 +1,0 @@
-slackclient==1.0.2
-requests==2.18.4
-beautifulsoup4==4.6.3
-configparser==3.5.0

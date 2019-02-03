@@ -1,17 +1,18 @@
-VENV_NAME=venv
+clean:
+	find . -name "*.pyc" -delete
+	rm -rf ./venv
+	rm -rf ./build
+	rm -rf ./source/*.zip
 
-.PHONY: prepare-dev venv build
+build:
+	mkdir -p ./build
+	rm -rf ./build/*
+	virtualenv ./venv -p /usr/local/bin/python3
+	./venv/bin/pip3 install -r ./source/requirements.txt
+	cd source/
+	cp -r ./venv/lib/python*/site-packages/. ./build
+	cp -r ./source/. ./build
+	cd ./build && zip -r lambda.zip .
+	rm -rf ./venv
 
-all: prepare-dev venv build
-
-prepare-dev: 
-	sudo apt-get -y install python3 python3-pip
-	pip3 install --user virtualenv
-
-venv:
-	test -d $(VENV_NAME) || virtualenv -p python3 $(VENV_NAME)
-	./$(VENV_NAME)/bin/pip3 install -r requirements.txt
-
-build: 
-	sed -i 's/REPLACE/$(slack_token)/g' config.ini
-	sudo cp rewbot_cron /etc/cron.d/rewbot
+.PHONY: clean build deploy
