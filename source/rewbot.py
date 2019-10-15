@@ -10,16 +10,28 @@ import configparser
 import boto3
 
 
-slack_token = ""
 
-url_list = ['https://www.rew.ca/properties/search/869746565/sort/latest/desc/page/1',    # Vancouver
-            'https://www.rew.ca/properties/search/869836757/sort/latest/desc/page/1',    # Burnaby
-            'https://www.rew.ca/properties/search/869839683/sort/latest/desc/page/1',    # Port Moody
-            'https://www.rew.ca/properties/search/869844572/sort/latest/desc/page/1',    # Coquitlam
-            'https://www.rew.ca/properties/search/869847257/sort/latest/desc/page/1',    # New Westminster
-            'https://www.rew.ca/properties/search/869850668/sort/latest/desc/page/1',    # Port Coquitlam
-            'https://www.rew.ca/properties/search/869854096/sort/latest/desc/page/1',    # North Vancouver
-            ]
+slack_token = 'xoxb-438591721045-438315915187-SFV7yPevpaADhPfv7sAO9yHA'
+headers = {
+    'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:69.0) Gecko/20100101 Firefox/69.0"
+}
+base_url = "https://www.rew.ca/properties/areas/"
+extended_url = "/type/townhouse?ajax=true&only_open_house=0&searchable_id=13&searchable_type=Geography&total_floor_area_from=1000&year_built_to=1990"
+
+location_list = [
+        'burnaby-bc',
+        'north-vancouver-bc',
+        'richmond-bc',
+        'pitt-meadows-bc',
+        'langley-bc',
+        'coquitlam-bc',
+        'maple-ridge-bc',
+        'new-westminster-bc',
+        'port-coquitlam-bc',
+        'port-moody-bc',
+        'vancouver-bc',
+        'west-vancouver-bc'
+        ]
 
 
 client = boto3.client('s3')
@@ -97,11 +109,13 @@ def get_property_assessment(address):
 
 
 def scrape_rew(url):
-    response = requests.get(url)
+    print("Querying {}{}{}".format(base_url, url, extended_url))
+    response = requests.get("{}{}{}".format(base_url, url, extended_url), headers=headers)
+    print(response.status_code)
     html = bs4.BeautifulSoup(response.content, 'html.parser')
     organic_listings = html.find('div', {'class': 'organiclistings'})
     if organic_listings:
-        return organic_listings.findAll(lambda tag: tag.name == 'article' and tag.get('class') == ['listing'])
+        return organic_listings.findAll(lambda tag: tag.name == 'article' and tag.get('class') == ['displaypanel'])
 
 
 def handler(event, context):
@@ -109,18 +123,19 @@ def handler(event, context):
     old_listings = load_pickle()
     new_listings = []
 
-    for url in url_list:
+    for url in location_list:
         listings = scrape_rew(url)
         if listings:
             all_listings.extend(listings)
     for listing in all_listings:
         data = {}
-        data['url'] = "https://www.rew.ca{}".format(listing.find('div', {'class': 'listing-photo_container'}).find('a')['href'])
-        data['title'] = listing.find('div', {'class': 'listing-header'}).find('a')['title']
-        data['area'] = listing.find('div', {'class': 'listing-body'}).find('ul', {'class': 'hidden-xs listing-subheading'}).find('li').getText()
-        data['price'] = listing.find('div', {'class': 'listing-body'}).find('div', {'class': 'row'}).find('div', {'class': 'listing-price'}).getText()
-        data['details'] = [(lambda x: str(x.getText()))(x) for x in listing.find('div', {'class': 'listing-body'}).find('ul', {'class': 'listing-information'}).findAll('li')]
-        data['id'] = listing.find('div', {'class': 'listing-body'}).find('dl', {'class': 'listing-extras hidden-xs'}).find('dd').getText()
+        data['url'] = "https://www.rew.ca{}".format(listing.find('div', {'class': 'displaypanel-photo_container'}).find('a')['href'])
+        data['title'] = listing.find('div', {'class': 'displaypanel-body'}).find('a')['title']
+        data['id'] = listing.find('div', {'class': 'displaypanel-body'}).find('a')['href'].split('/')[2]
+        data['area'] = listing.find('div', {'class': 'displaypanel-section'}).find('ul', {'class': 'l-pipedlist displaypanel-info'}).find('li').getText()
+        data['price'] = listing.find('div', {'class': 'displaypanel-title hidden-xs'}).getText()
+        data['details'] = [(lambda x: str(x.getText()))(x) for x in listing.find('div', {'class': 'displaypanel-section clearfix'}).find('ul', {'class': 'l-pipedlist'}).findAll('li')]
+        #data['id'] = listing.find('div', {'class': 'listing-body'}).find('dl', {'class': 'listing-extras hidden-xs'}).find('dd').getText()
         if check_new_listing(data, old_listings):
             try:
                 old_listings[data['id']] = data
@@ -135,3 +150,5 @@ def handler(event, context):
         print(send_slack(":house: {} - {} - :moneybag: *{}* - :mag: {} `{}` `{}` {}".format(data['title'], data['area'], data['price'], data.get('assessed_value'), data.get('assessed_url'), data['details'], data['url'])))
     if (len(new_listings) > 0): 
         create_file(old_listings)
+
+handler("", "")
